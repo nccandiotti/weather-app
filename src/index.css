@@ -9,14 +9,14 @@ body {
 }
 
 .app {
-  background-image: url("https://raw.githubusercontent.com/TylerPottsDev/weather-react/master/src/assets/cold-bg.jpg");
+  background-image: url("./images/cold-bg.jpeg");
   background-size: cover;
   background-position: bottom;
   transition: 0.4 ease-out;
 }
 
 .app.warm {
-  background-image: url("https://github.com/TylerPottsDev/weather-react/blob/master/src/assets/warm-bg.jpg?raw=true");
+  background-image: url("./images/warm-bg.jpeg");
 }
 main {
   min-height: 100vh;

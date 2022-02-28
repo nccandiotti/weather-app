@@ -7,12 +7,6 @@ const api = {
 
 const celsiusToFahrenheit = (celsius) => Math.trunc((celsius * 9) / 5 + 32)
 
-const warmPicture =
-  "https://github.com/TylerPottsDev/weather-react/blob/master/src/assets/warm-bg.jpg?raw=true"
-
-const coolPicture =
-  "https://raw.githubusercontent.com/TylerPottsDev/weather-react/master/src/assets/cold-bg.jpg"
-
 //------------------------------------------
 
 function App() {
