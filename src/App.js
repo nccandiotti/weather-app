@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react"
 import "./App.css"
+
 const api = {
-  key: "7870f2f515445b31d75696044a316c45",
   base: "https://api.openweathermap.org/data/2.5/",
 }
+
+const celsiusToFahrenheit = (celsius) => Math.trunc((celsius * 9) / 5 + 32)
+
 const warmPicture =
   "https://github.com/TylerPottsDev/weather-react/blob/master/src/assets/warm-bg.jpg?raw=true"
 
@@ -15,15 +18,21 @@ const coolPicture =
 function App() {
   const [query, setQuery] = useState("")
   const [weather, setWeather] = useState({})
+  const [isFar, setIsFar] = useState(false)
+
+  const farToCelsToggle = () => {
+    setIsFar((prevState) => !prevState)
+  }
 
   const search = (e) => {
     if (e.key === "Enter")
-      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
+      fetch(
+        `${api.base}weather?q=${query}&units=metric&APPID=${process.env.REACT_APP_KEY}`
+      )
         .then((r) => r.json())
         .then((result) => {
           setWeather(result)
           setQuery("")
-          console.log(weather)
         })
   }
 
@@ -60,6 +69,11 @@ function App() {
     return `${day} ${date} ${month} ${year}`
   }
 
+  function handleChange(e) {
+    setIsFar(e.target.checked)
+    console.log("hello")
+  }
+
   return (
     <div className="app">
       <main>
@@ -83,10 +97,31 @@ function App() {
             </div>
             <div className="weather-box">
               <div className="temp">
-                <div className="temp">{Math.trunc(weather.main.temp)} ℃</div>
+                {isFar ? (
+                  <div className="temp">
+                    {celsiusToFahrenheit(Math.trunc(weather.main.temp))} F
+                  </div>
+                ) : (
+                  <div className="temp">{Math.trunc(weather.main.temp)} ℃</div>
+                )}
+              </div>
+              <div className="toggle-switch">
+                {isFar ? (
+                  <label style={{ color: "white" }}>Celcius</label>
+                ) : (
+                  <label style={{ color: "white" }}>Farenheight</label>
+                )}
+                <input
+                  type="checkbox"
+                  className="toggle-switch-checkbox"
+                  name="toggleSwitch"
+                  id="toggleSwitch"
+                  checked={isFar}
+                  onChange={handleChange}
+                />
               </div>
               <div className="weather"> {weather.weather[0].main}</div>
-            </div>{" "}
+            </div>
           </>
         ) : null}
       </main>
