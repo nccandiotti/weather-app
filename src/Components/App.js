@@ -1,5 +1,12 @@
-import React, { useState, useEffect } from "react"
-import "./App.css"
+import React, { useState, useEffect, useContext } from "react"
+import "../App.css"
+import { QueryContext } from "./QueryContext"
+import Search from "./Search"
+import Switch from "@mui/material/Switch"
+import TempCard from "./TempCard"
+
+const label = { inputProps: { "aria-label": "Switch demo" } }
+// import Heart from "react-animated-heart"
 
 const api = {
   base: "https://api.openweathermap.org/data/2.5/",
@@ -10,6 +17,7 @@ const celsiusToFahrenheit = (celsius) => Math.trunc((celsius * 9) / 5 + 32)
 //------------------------------------------
 
 function App() {
+  const [isClick, setClick] = useState(false)
   const [query, setQuery] = useState("")
   const [weather, setWeather] = useState({})
   const [isFar, setIsFar] = useState(false)
@@ -18,7 +26,7 @@ function App() {
     setIsFar((prevState) => !prevState)
   }
 
-  const search = (e) => {
+  const searchApi = (e) => {
     if (e.key === "Enter")
       fetch(
         `${api.base}weather?q=${query}&units=metric&APPID=${process.env.REACT_APP_KEY}`
@@ -70,17 +78,11 @@ function App() {
 
   return (
     <div className="app">
+      <QueryContext.Provider value={{ query, setQuery, searchApi }}>
+        <Search />
+      </QueryContext.Provider>
+      {/* <Heart isClick={isClick} onClick={() => setClick(!isClick)} /> */}
       <main>
-        <div className="search-box">
-          <input
-            type="text"
-            className="search-bar"
-            placeholder="Search..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyPress={search}
-          />
-        </div>
         {typeof weather.main !== "undefined" ? (
           <>
             <div className="location-box">
@@ -98,22 +100,16 @@ function App() {
                 ) : (
                   <div className="temp">{Math.trunc(weather.main.temp)} ℃</div>
                 )}
+                <Switch checked={isFar} onChange={handleChange} {...label} />
               </div>
-              <div className="toggle-switch">
+              {/* <div className="toggle-switch">
                 {isFar ? (
                   <label style={{ color: "white" }}>Celcius</label>
                 ) : (
                   <label style={{ color: "white" }}>Farenheight</label>
                 )}
-                <input
-                  type="checkbox"
-                  className="toggle-switch-checkbox"
-                  name="toggleSwitch"
-                  id="toggleSwitch"
-                  checked={isFar}
-                  onChange={handleChange}
-                />
-              </div>
+              </div> */}
+              <div></div>) }
               <div className="weather"> {weather.weather[0].main}</div>
             </div>
           </>
